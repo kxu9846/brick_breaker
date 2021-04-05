@@ -1,10 +1,18 @@
 class Ball {
-    constructor(ctx, x, y, radius, color) {
+    constructor(ctx, x, y, radius, color, speed, velocityX, velocityY) {
         this.ctx = ctx
         this.x = x
         this.y =  y
         this.radius = radius
         this.color = color
+        this.speed = speed
+        this.velocityX = velocityX
+        this.velocityY = velocityY
+    }
+
+    move() {
+        this.x -= this.velocityX;
+        this.y -= this.velocityY;
     }
 
     render() {
@@ -16,5 +24,3 @@ class Ball {
         this.ctx.fill();
     }
 }
-
-export default Ball
