@@ -9,23 +9,20 @@ class BrickBreaker {
     initializeEntities() {
         this.ball = new Ball(this.ctx, this.canvas.width/2,545, 7, '#FFF', 10, 5, 5)
         this.paddle = new Paddle(this.ctx, 100, 10, 155, 550, 'grey')
-        this.bricks = new Array(5).fill(new Array(8).fill([]))
+        this.bricks = []
 
         const colors = ['red', 'blue', 'green', 'yellow', 'purple']
 
         let y = 0
         for (let row = 0; row < 5; row++) {
             let x = 0
+            if (!this.bricks[row]) {
+                this.bricks[row] = []
+            }
             for (let col = 0; col < 8; col++) {
-                let color = colors[row]
-                console.log("x, y, and color: ", x, y, color)
-                console.log("array row and col: ", row, col)
-                let brick = new Brick(this.ctx, x, y, 50, 25, color)
+                let brick = new Brick(this.ctx, x, y, 50, 25, colors[row])
                 x+=50
                 this.bricks[row][col] = brick
-                console.log("current brick before pushing to array", this.bricks[row][col])
-                console.log("brick array", this.bricks)
-                console.log("key into array for current brick value", this.bricks[row][col])
             }
             y+=25
         }
@@ -134,7 +131,6 @@ class BrickBreaker {
     }
 
     run() {
-        console.log("i am in run")
         this.update()
         this.render()
     }
