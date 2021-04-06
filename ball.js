@@ -6,14 +6,15 @@ class Ball {
     this.radius = radius;
     this.color = color;
     this.speed = speed;
-    this.direction = 1;
+    this.xDirection = 0;
+    this.yDirection = 1;
   }
 
   move() {
     if (this.gameStart) {
-      this.x += this.direction * 1.5;
+      this.x += this.xDirection * this.speed;
     }
-    this.y += this.direction * this.speed;
+    this.y += this.yDirection * this.speed;
     this.updateEdges();
   }
 
@@ -24,8 +25,9 @@ class Ball {
     this.right = this.x + this.radius;
   }
 
-  changeDirection(direction) {
-    this.direction = direction;
+  setDirection(xDirection, yDirection) {
+    this.xDirection = xDirection;
+    this.yDirection = yDirection;
     this.gameStart = true;
   }
 

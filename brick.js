@@ -6,6 +6,10 @@ class Brick {
     this.width = width;
     this.height = height;
     this.color = color;
+    this.top = this.y - this.radius;
+    this.bottom = this.y + this.radius;
+    this.left = this.x - this.radius;
+    this.right = this.x + this.radius;
   }
 
   render() {

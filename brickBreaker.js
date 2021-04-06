@@ -10,8 +10,8 @@ class BrickBreaker {
   }
 
   initializeEntities() {
-    this.ball = new Ball(this.ctx, this.canvas.width / 2, 200, 7, "#FFF", 5);
-    this.paddle = new Paddle(this.ctx, 100, 10, 150, 550, 5, "grey");
+    this.ball = new Ball(this.ctx, this.canvas.width / 2, 200, 7, "#FFF", 4);
+    this.paddle = new Paddle(this.ctx, 100, 10, 150, 500, 5, "grey");
     this.bricks = [];
 
     const colors = ["red", "blue", "green", "yellow", "purple"];
@@ -68,7 +68,7 @@ class BrickBreaker {
         this.paddle.left <= this.ball.left &&
         this.paddle.right >= this.ball.right
       ) {
-        this.ball.changeDirection(-1, -1);
+        this.ball.setDirection(-1, -1);
       }
     }
   }
@@ -82,16 +82,12 @@ class BrickBreaker {
   }
 
   detectCanvasCollision() {
-    // if ball hits canvas edge, 1. direction changes
-
-    //if ball hits left  wall, x direction (1)
     if (this.ball.left <= 0) {
-      this.ball.changeDirection(1);
-      // do something
-    }
-    //if ball hits top wall, it comes back down
-    else if (this.ball.top >= 0) {
-      //do something
+      this.ball.setDirection(1, -1);
+    } else if (this.ball.right >= 400) {
+      this.ball.setDirection(-1, 1);
+    } else if (this.ball.top <= 0) {
+      this.ball.setDirection(1, 1);
     }
   }
 
@@ -119,12 +115,19 @@ class BrickBreaker {
     }
   }
 
+  renderScore() {
+    console.log("in render score");
+    this.ctx.font = "20px Arial";
+    this.ctx.fillText(`Score: ${this.score}`, 300, 575);
+  }
+
   render() {
     // Draw all entities here - ball, paddle, bricks
     this.clearCanvas();
     this.renderBricks();
     this.ball.render();
     this.paddle.render();
+    this.renderScore();
   }
 
   run() {
