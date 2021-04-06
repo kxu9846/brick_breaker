@@ -8,6 +8,7 @@ class Ball {
     this.speed = speed;
     this.xDirection = 0;
     this.yDirection = 1;
+    this.gameOver = false;
   }
 
   move() {

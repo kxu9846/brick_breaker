@@ -62,8 +62,15 @@ class BrickBreaker {
     this.paddle.move();
   }
 
+  updateBall() {
+    this.ball.move();
+  }
+
   detectPaddleCollision() {
-    if (this.paddle.top <= this.ball.bottom) {
+    if (
+      this.paddle.top <= this.ball.bottom &&
+      this.ball.top >= this.paddle.bottom
+    ) {
       if (
         this.paddle.left <= this.ball.left &&
         this.paddle.right >= this.ball.right
@@ -73,21 +80,31 @@ class BrickBreaker {
     }
   }
 
-  updateBall() {
-    this.ball.move();
+  detectCanvasCollision() {
+    // console.log("this is ball bottom", this.ball.bottom);
+    if (this.ball.left <= 0) {
+      this.ball.setDirection(1, this.ball.yDirection);
+    } else if (this.ball.right >= 400) {
+      this.ball.setDirection(-1, this.ball.yDirection);
+    } else if (this.ball.top <= 0) {
+      this.ball.setDirection(this.ball.xDirection, 1);
+    } else if (this.ball.top > this.canvas.height) {
+      this.ball.setDirection(0, 0);
+    }
   }
 
   detectBrickCollision() {
-    // if ball hits brick, 1. brick breaks, score +=1, ball direction changes, velocity increases
-  }
-
-  detectCanvasCollision() {
-    if (this.ball.left <= 0) {
-      this.ball.setDirection(1, -1);
-    } else if (this.ball.right >= 400) {
-      this.ball.setDirection(-1, 1);
-    } else if (this.ball.top <= 0) {
-      this.ball.setDirection(1, 1);
+    for (let row = 0; row < this.bricks.length; row++) {
+      for (let col = 0; col < this.bricks[row].length; col++) {
+        let brick = this.bricks[row][col];
+        if (brick.broken === false && brick.bottom === this.ball.top) {
+          if (this.ball.right >= brick.left && this.ball.left <= brick.right) {
+            brick.broken = true;
+            this.score += 1;
+            this.ball.setDirection(1, 1);
+          }
+        }
+      }
     }
   }
 
@@ -96,33 +113,40 @@ class BrickBreaker {
   }
 
   reset() {
-    // reset game if player wins
+    this.clearCanvas();
+    this.initializeEntities();
   }
 
   update() {
     this.updatePaddle();
     this.updateBall();
     this.detectPaddleCollision();
-    this.detectBrickCollision();
     this.detectCanvasCollision();
+    this.detectBrickCollision();
   }
 
   renderBricks() {
+    let allBroken = true;
     for (let row = 0; row < this.bricks.length; row++) {
       for (let col = 0; col < this.bricks[row].length; col++) {
-        this.bricks[row][col].render();
+        let brick = this.bricks[row][col];
+        if (brick.broken === false) {
+          brick.render();
+          allBroken = false;
+        }
       }
+    }
+    if (allBroken) {
+      this.reset();
     }
   }
 
   renderScore() {
-    console.log("in render score");
     this.ctx.font = "20px Arial";
     this.ctx.fillText(`Score: ${this.score}`, 300, 575);
   }
 
   render() {
-    // Draw all entities here - ball, paddle, bricks
     this.clearCanvas();
     this.renderBricks();
     this.ball.render();
