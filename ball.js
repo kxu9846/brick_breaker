@@ -14,6 +14,7 @@ class Ball {
       this.x += this.direction * 1.5;
     }
     this.y += this.direction * this.speed;
+    this.updateEdges();
   }
 
   updateEdges() {

@@ -63,20 +63,11 @@ class BrickBreaker {
   }
 
   detectPaddleCollision() {
-    console.log(
-      "paddle top and ball bottom",
-      this.paddle.top,
-      this.ball.bottom
-    );
-
-    // if paddle hits ball, ball changes direction (-1)
     if (this.paddle.top <= this.ball.bottom) {
-      console.log("paddle collision");
       if (
         this.paddle.left <= this.ball.left &&
         this.paddle.right >= this.ball.right
       ) {
-        console.log("should change direction now");
         this.ball.changeDirection(-1, -1);
       }
     }
@@ -84,7 +75,6 @@ class BrickBreaker {
 
   updateBall() {
     this.ball.move();
-    this.ball.updateEdges();
   }
 
   detectBrickCollision() {

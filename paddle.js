@@ -8,10 +8,6 @@ class Paddle {
     this.speed = speed;
     this.color = color;
     this.direction = 0;
-    this.top = this.y;
-    this.bottom = this.x + this.height;
-    this.left = this.x;
-    this.right = this.x + this.width;
   }
 
   move() {
@@ -21,6 +17,14 @@ class Paddle {
       this.setDirection(-1);
     }
     this.x += this.direction * this.speed;
+    this.updateEdges();
+  }
+
+  updateEdges() {
+    this.top = this.y;
+    this.bottom = this.x + this.height;
+    this.left = this.x;
+    this.right = this.x + this.width;
   }
 
   setDirection(direction) {
