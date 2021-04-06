@@ -8,15 +8,16 @@ class Paddle {
     this.speed = speed;
     this.color = color;
     this.direction = 0;
+    this.top = this.y;
+    this.bottom = this.x + this.height;
+    this.left = this.x;
+    this.right = this.x + this.width;
   }
 
   move() {
-    const paddleLeft = this.x;
-    const paddleRight = this.x + this.width;
-
-    if (paddleLeft === 0) {
+    if (this.left === 0) {
       this.setDirection(1);
-    } else if (paddleRight === 400) {
+    } else if (this.right === 400) {
       this.setDirection(-1);
     }
     this.x += this.direction * this.speed;

@@ -1,23 +1,31 @@
 class Ball {
-  constructor(ctx, x, y, radius, color, speed, velocityX, velocityY) {
+  constructor(ctx, x, y, radius, color, speed) {
     this.ctx = ctx;
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.color = color;
     this.speed = speed;
-    this.velocityX = velocityX;
-    this.velocityY = velocityY;
+    this.direction = 1;
   }
 
   move() {
-    this.x += this.velocityX;
-    this.y += this.velocityY;
+    if (this.gameStart) {
+      this.x += this.direction * 1.5;
+    }
+    this.y += this.direction * this.speed;
   }
 
-  changeDirection(directionX, directionY) {
-    this.velocityX *= directionX;
-    this.velocityY *= directionY;
+  updateEdges() {
+    this.top = this.y - this.radius;
+    this.bottom = this.y + this.radius;
+    this.left = this.x - this.radius;
+    this.right = this.x + this.radius;
+  }
+
+  changeDirection(direction) {
+    this.direction = direction;
+    this.gameStart = true;
   }
 
   render() {

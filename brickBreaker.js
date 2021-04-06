@@ -10,16 +10,7 @@ class BrickBreaker {
   }
 
   initializeEntities() {
-    this.ball = new Ball(
-      this.ctx,
-      this.canvas.width / 2,
-      545,
-      7,
-      "#FFF",
-      10,
-      5,
-      5
-    );
+    this.ball = new Ball(this.ctx, this.canvas.width / 2, 200, 7, "#FFF", 5);
     this.paddle = new Paddle(this.ctx, 100, 10, 150, 550, 5, "grey");
     this.bricks = [];
 
@@ -72,23 +63,28 @@ class BrickBreaker {
   }
 
   detectPaddleCollision() {
-    // if paddle hits ball, ball moves in opposite direction, velocity increases
-    const paddleTop = this.paddle.y;
-    const paddleBottom = this.paddle.x + this.paddle.width;
-    const paddleLeft = this.paddle.x;
-    const paddleRight = this.paddle.y + this.paddle.height;
+    console.log(
+      "paddle top and ball bottom",
+      this.paddle.top,
+      this.ball.bottom
+    );
 
-    const ballTop = this.ball.y - this.ball.radius;
-    const ballBottom = this.ball.x + this.ball.radius;
-    const ballLeft = this.ball.x - this.ball.radius;
-    const ballRight = this.ball.y + this.ball.radius;
-
-    if (paddleTop === ballBottom) {
-      if (paddleLeft <= ballLeft && paddleRight >= ballRight) {
-        this.ball.changeDirection(0, -1);
-        this.ball.move();
+    // if paddle hits ball, ball changes direction (-1)
+    if (this.paddle.top <= this.ball.bottom) {
+      console.log("paddle collision");
+      if (
+        this.paddle.left <= this.ball.left &&
+        this.paddle.right >= this.ball.right
+      ) {
+        console.log("should change direction now");
+        this.ball.changeDirection(-1, -1);
       }
     }
+  }
+
+  updateBall() {
+    this.ball.move();
+    this.ball.updateEdges();
   }
 
   detectBrickCollision() {
@@ -96,17 +92,15 @@ class BrickBreaker {
   }
 
   detectCanvasCollision() {
-    // if ball hits canvas edge, 1. direction changes, velocity increases
-    const ballTop = this.ball.y - this.ball.radius;
-    const ballLeft = this.ball.x - this.ball.radius;
-    const ballRight = this.ball.y + this.ball.radius;
+    // if ball hits canvas edge, 1. direction changes
 
-    //if ball hits right or left  wall, it moves in opposite direction
-    if (ballLeft <= 0 || ballRight >= this.canvas.width) {
+    //if ball hits left  wall, x direction (1)
+    if (this.ball.left <= 0) {
+      this.ball.changeDirection(1);
       // do something
     }
     //if ball hits top wall, it comes back down
-    else if (ballTop >= 0) {
+    else if (this.ball.top >= 0) {
       //do something
     }
   }
@@ -120,8 +114,8 @@ class BrickBreaker {
   }
 
   update() {
-    console.log("paddle", this.paddle);
     this.updatePaddle();
+    this.updateBall();
     this.detectPaddleCollision();
     this.detectBrickCollision();
     this.detectCanvasCollision();
@@ -154,3 +148,14 @@ class BrickBreaker {
 }
 
 new BrickBreaker().start();
+
+/*
+TODO:
+1. move paddle
+2. move ball
+3. collision logic
+4. break brick logic
+5. win game logic
+
+
+*/
