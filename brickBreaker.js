@@ -10,7 +10,7 @@ class BrickBreaker {
   }
 
   initializeEntities() {
-    this.ball = new Ball(this.ctx, this.canvas.width / 2, 200, 7, "#FFF", 4);
+    this.ball = new Ball(this.ctx, this.canvas.width / 2, 200, 10, "#FFF", 4);
     this.paddle = new Paddle(this.ctx, 100, 10, 150, 500, 5, "grey");
     this.bricks = [];
 
@@ -97,11 +97,13 @@ class BrickBreaker {
     for (let row = 0; row < this.bricks.length; row++) {
       for (let col = 0; col < this.bricks[row].length; col++) {
         let brick = this.bricks[row][col];
-        if (brick.broken === false && brick.bottom === this.ball.top) {
+        if (brick.bottom >= this.ball.top) {
           if (this.ball.right >= brick.left && this.ball.left <= brick.right) {
-            brick.broken = true;
-            this.score += 1;
-            this.ball.setDirection(1, 1);
+            if (brick.broken === false) {
+              this.ball.setDirection(1, 1);
+              brick.broken = true;
+              this.score += 1;
+            }
           }
         }
       }
