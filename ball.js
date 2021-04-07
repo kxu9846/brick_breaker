@@ -23,9 +23,12 @@ class Ball {
     this.right = this.x + this.radius;
   }
 
-  setDirection(xDirection, yDirection) {
-    this.xDirection = xDirection;
-    this.yDirection = yDirection;
+  setXDirection(direction) {
+    this.xDirection = direction;
+  }
+
+  setYDirection(direction) {
+    this.yDirection = direction;
   }
 
   render() {

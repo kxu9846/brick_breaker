@@ -72,20 +72,25 @@ class BrickBreaker {
         this.paddle.left <= this.ball.left &&
         this.paddle.right >= this.ball.right
       ) {
-        this.ball.setDirection(-1, -1);
+        this.ball.setXDirection(-1);
+        this.ball.setYDirection(-1);
       }
     }
   }
 
   detectCanvasCollision() {
     if (this.ball.left <= 0) {
-      this.ball.setDirection(1, this.ball.yDirection);
+      this.ball.setXDirection(1);
+      this.ball.setYDirection(this.ball.yDirection);
     } else if (this.ball.right >= 400) {
-      this.ball.setDirection(-1, this.ball.yDirection);
+      this.ball.setXDirection(-1);
+      this.ball.setYDirection(this.ball.yDirection);
     } else if (this.ball.top <= 0) {
-      this.ball.setDirection(this.ball.xDirection, 1);
+      this.ball.setXDirection(this.ball.xDirection);
+      this.ball.setYDirection(1);
     } else if (this.ball.top > this.canvas.height) {
-      this.ball.setDirection(0, 0);
+      this.ball.setXDirection(0);
+      this.ball.setYDirection(0);
     }
   }
 
@@ -95,7 +100,8 @@ class BrickBreaker {
         let brick = this.bricks[row][col];
         if (brick.bottom >= this.ball.top && brick.broken === false) {
           if (this.ball.right >= brick.left && this.ball.left <= brick.right) {
-            this.ball.setDirection(1, 1);
+            this.ball.setXDirection(1);
+            this.ball.setYDirection(1);
             brick.broken = true;
             this.score += 1;
           }
