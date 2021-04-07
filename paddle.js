@@ -1,5 +1,6 @@
 class Paddle {
-  constructor(ctx, width, height, x, y, speed, color) {
+  constructor(canvas, ctx, width, height, x, y, speed, color) {
+    this.canvas = canvas;
     this.ctx = ctx;
     this.width = width;
     this.height = height;
@@ -13,7 +14,7 @@ class Paddle {
   move() {
     if (this.left === 0) {
       this.setDirection(1);
-    } else if (this.right === 400) {
+    } else if (this.right === this.canvas.width) {
       this.setDirection(-1);
     }
     this.x += this.direction * this.speed;

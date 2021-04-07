@@ -3,31 +3,45 @@ class BrickBreaker {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
     this.score = 0;
-    this.leftArrowPressed = false;
-    this.rightArrowPressed = false;
     this.initializeEntities();
     this.initializeEventListeners();
   }
 
   initializeEntities() {
     this.ball = new Ball(this.ctx, this.canvas.width / 2, 200, 10, "#FFF", 4);
-    this.paddle = new Paddle(this.ctx, 100, 10, 150, 525, 5, "grey");
+    this.paddle = new Paddle(
+      this.canvas,
+      this.ctx,
+      100,
+      10,
+      150,
+      525,
+      5,
+      "grey"
+    );
     this.bricks = [];
+    this.brickRows = 5;
+    this.brickCols = 8;
+    this.brickWidth = 50;
+    this.brickLength = 25;
 
     const colors = ["red", "blue", "green", "yellow", "purple"];
 
-    let y = 0;
-    for (let row = 0; row < 5; row++) {
-      let x = 0;
-      if (!this.bricks[row]) {
-        this.bricks[row] = [];
-      }
-      for (let col = 0; col < 8; col++) {
-        let brick = new Brick(this.ctx, x, y, 50, 25, colors[row]);
-        x += 50;
+    for (let col = 0; col < this.brickRows; col++) {
+      for (let row = 0; row < this.brickCols; row++) {
+        if (!this.bricks[row]) {
+          this.bricks[row] = [];
+        }
+        let brick = new Brick(
+          this.ctx,
+          row * 50,
+          col * 25,
+          this.brickWidth,
+          this.brickLength,
+          colors[col]
+        );
         this.bricks[row][col] = brick;
       }
-      y += 25;
     }
   }
 
@@ -63,7 +77,9 @@ class BrickBreaker {
     this.ball.move();
   }
 
-  detectPaddleCollision() {
+  detectCollisions() {
+    this.updateEntities();
+
     if (
       this.paddle.top <= this.ball.bottom &&
       this.ball.top >= this.paddle.bottom
@@ -76,13 +92,11 @@ class BrickBreaker {
         this.ball.setYDirection(-1);
       }
     }
-  }
 
-  detectCanvasCollision() {
     if (this.ball.left <= 0) {
       this.ball.setXDirection(1);
       this.ball.setYDirection(this.ball.yDirection);
-    } else if (this.ball.right >= 400) {
+    } else if (this.ball.right >= this.canvas.width) {
       this.ball.setXDirection(-1);
       this.ball.setYDirection(this.ball.yDirection);
     } else if (this.ball.top <= 0) {
@@ -94,7 +108,7 @@ class BrickBreaker {
     }
   }
 
-  detectBrickCollision() {
+  detectBrickCollisions() {
     for (let row = 0; row < this.bricks.length; row++) {
       for (let col = 0; col < this.bricks[row].length; col++) {
         let brick = this.bricks[row][col];
@@ -120,16 +134,14 @@ class BrickBreaker {
   }
 
   update() {
-    this.updateEntities();
-    this.detectPaddleCollision();
-    this.detectCanvasCollision();
-    this.detectBrickCollision();
+    this.detectCollisions();
+    this.detectBrickCollisions();
   }
 
   renderBricks() {
     for (let row = 0; row < this.bricks.length; row++) {
       for (let col = 0; col < this.bricks[row].length; col++) {
-        let brick = this.bricks[row][col];
+        const brick = this.bricks[row][col];
         if (brick.broken === false) {
           brick.render();
         }
@@ -140,7 +152,7 @@ class BrickBreaker {
   renderScore() {
     this.ctx.font = "20px Arial";
     this.ctx.fillText(`Score: ${this.score}`, 300, 575);
-    if (this.score === this.bricks.length * this.bricks[0].length) {
+    if (this.score === this.brickRows * this.bricksC) {
       this.ctx.font = "30px Arial";
       this.ctx.fillText(
         "YOU WIN",
