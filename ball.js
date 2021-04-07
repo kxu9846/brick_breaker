@@ -27,7 +27,7 @@ class Ball {
   }
 
   move() {
-    this.x += this.xDirection * this.speed;
+    this.x += (this.xDirection * this.speed) / 2;
     this.y += this.yDirection * this.speed;
   }
 
