@@ -112,8 +112,7 @@ class BrickBreaker {
       this.ball.setXDirection(this.ball.xDirection);
       this.ball.setYDirection(1);
     } else if (ballTop > this.canvas.height) {
-      this.ball.setXDirection(0);
-      this.ball.setYDirection(0);
+      this.clearCanvas();
     }
   }
 
@@ -183,7 +182,7 @@ class BrickBreaker {
     this.ctx.font = "20px Arial";
     this.ctx.fillText(`Score: ${this.score}`, 300, 575);
     if (this.score === this.brickRows * this.brickCols) {
-      this.reset();
+      this.clearCanvas();
       this.ctx.font = "50px Arial";
       this.ctx.fillText("YOU WIN", 150, this.canvas.height / 2);
     }
