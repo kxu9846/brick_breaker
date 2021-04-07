@@ -10,6 +10,24 @@ class Ball {
     this.yDirection = 1;
   }
 
+  move() {
+    this.x += this.xDirection * this.speed;
+    this.y += this.yDirection * this.speed;
+    this.updateEdges();
+  }
+
+  updateEdges() {
+    this.top = this.y - this.radius;
+    this.bottom = this.y + this.radius;
+    this.left = this.x - this.radius;
+    this.right = this.x + this.radius;
+  }
+
+  setDirection(xDirection, yDirection) {
+    this.xDirection = xDirection;
+    this.yDirection = yDirection;
+  }
+
   render() {
     this.ctx.fillStyle = this.color;
     this.ctx.beginPath();
