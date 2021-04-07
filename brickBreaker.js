@@ -140,7 +140,7 @@ class BrickBreaker {
   renderScore() {
     this.ctx.font = "20px Arial";
     this.ctx.fillText(`Score: ${this.score}`, 300, 575);
-    if (this.score === 40) {
+    if (this.score === this.bricks.length * this.bricks[0].length) {
       this.ctx.font = "30px Arial";
       this.ctx.fillText(
         "YOU WIN",
