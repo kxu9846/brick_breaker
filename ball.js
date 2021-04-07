@@ -10,17 +10,25 @@ class Ball {
     this.yDirection = 1;
   }
 
+  getTopEdge() {
+    return this.y - this.radius;
+  }
+
+  getBottomEdge() {
+    return this.y + this.radius;
+  }
+
+  getLeftEdge() {
+    return this.x - this.radius;
+  }
+
+  getRightEdge() {
+    return this.x + this.radius;
+  }
+
   move() {
     this.x += this.xDirection * this.speed;
     this.y += this.yDirection * this.speed;
-    this.updateEdges();
-  }
-
-  updateEdges() {
-    this.top = this.y - this.radius;
-    this.bottom = this.y + this.radius;
-    this.left = this.x - this.radius;
-    this.right = this.x + this.radius;
   }
 
   setXDirection(direction) {

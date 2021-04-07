@@ -6,11 +6,23 @@ class Brick {
     this.width = width;
     this.height = height;
     this.color = color;
-    this.top = this.y;
-    this.bottom = this.y + this.height;
-    this.left = this.x;
-    this.right = this.x + this.width;
     this.broken = false;
+  }
+
+  getTopEdge() {
+    return this.y;
+  }
+
+  getBottomEdge() {
+    return this.y + this.height;
+  }
+
+  getLeftEdge() {
+    return this.x;
+  }
+
+  getRightEdge() {
+    return this.x + this.width;
   }
 
   render() {
