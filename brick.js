@@ -16,7 +16,7 @@ class Brick {
   render() {
     this.ctx.fillStyle = this.color;
     this.ctx.fillRect(this.x, this.y, this.width, this.height);
-    this.ctx.strokeStyle = "black";
+    this.ctx.strokeStyle = "white";
     this.ctx.strokeRect(this.x, this.y, this.width, this.height);
   }
 }

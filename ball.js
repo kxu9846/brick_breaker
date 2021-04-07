@@ -8,13 +8,10 @@ class Ball {
     this.speed = speed;
     this.xDirection = 0;
     this.yDirection = 1;
-    this.gameOver = false;
   }
 
   move() {
-    if (this.gameStart) {
-      this.x += this.xDirection * this.speed;
-    }
+    this.x += this.xDirection * this.speed;
     this.y += this.yDirection * this.speed;
     this.updateEdges();
   }
@@ -29,7 +26,6 @@ class Ball {
   setDirection(xDirection, yDirection) {
     this.xDirection = xDirection;
     this.yDirection = yDirection;
-    this.gameStart = true;
   }
 
   render() {

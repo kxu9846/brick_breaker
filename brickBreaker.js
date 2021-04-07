@@ -11,7 +11,7 @@ class BrickBreaker {
 
   initializeEntities() {
     this.ball = new Ball(this.ctx, this.canvas.width / 2, 200, 10, "#FFF", 4);
-    this.paddle = new Paddle(this.ctx, 100, 10, 150, 500, 5, "grey");
+    this.paddle = new Paddle(this.ctx, 100, 10, 150, 525, 5, "grey");
     this.bricks = [];
 
     const colors = ["red", "blue", "green", "yellow", "purple"];
@@ -58,11 +58,8 @@ class BrickBreaker {
     }
   }
 
-  updatePaddle() {
+  updateEntities() {
     this.paddle.move();
-  }
-
-  updateBall() {
     this.ball.move();
   }
 
@@ -81,7 +78,6 @@ class BrickBreaker {
   }
 
   detectCanvasCollision() {
-    // console.log("this is ball bottom", this.ball.bottom);
     if (this.ball.left <= 0) {
       this.ball.setDirection(1, this.ball.yDirection);
     } else if (this.ball.right >= 400) {
@@ -97,13 +93,11 @@ class BrickBreaker {
     for (let row = 0; row < this.bricks.length; row++) {
       for (let col = 0; col < this.bricks[row].length; col++) {
         let brick = this.bricks[row][col];
-        if (brick.bottom >= this.ball.top) {
+        if (brick.bottom >= this.ball.top && brick.broken === false) {
           if (this.ball.right >= brick.left && this.ball.left <= brick.right) {
-            if (brick.broken === false) {
-              this.ball.setDirection(1, 1);
-              brick.broken = true;
-              this.score += 1;
-            }
+            this.ball.setDirection(1, 1);
+            brick.broken = true;
+            this.score += 1;
           }
         }
       }
@@ -120,32 +114,35 @@ class BrickBreaker {
   }
 
   update() {
-    this.updatePaddle();
-    this.updateBall();
+    this.updateEntities();
     this.detectPaddleCollision();
     this.detectCanvasCollision();
     this.detectBrickCollision();
   }
 
   renderBricks() {
-    let allBroken = true;
     for (let row = 0; row < this.bricks.length; row++) {
       for (let col = 0; col < this.bricks[row].length; col++) {
         let brick = this.bricks[row][col];
         if (brick.broken === false) {
           brick.render();
-          allBroken = false;
         }
       }
-    }
-    if (allBroken) {
-      this.reset();
     }
   }
 
   renderScore() {
     this.ctx.font = "20px Arial";
     this.ctx.fillText(`Score: ${this.score}`, 300, 575);
+    if (this.score === 40) {
+      this.ctx.font = "30px Arial";
+      this.ctx.fillText(
+        "YOU WIN",
+        this.canvas.width / 2,
+        this.canvas.height / 2
+      );
+      this.reset();
+    }
   }
 
   render() {
@@ -167,14 +164,3 @@ class BrickBreaker {
 }
 
 new BrickBreaker().start();
-
-/*
-TODO:
-1. move paddle
-2. move ball
-3. collision logic
-4. break brick logic
-5. win game logic
-
-
-*/
