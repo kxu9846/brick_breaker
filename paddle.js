@@ -11,9 +11,9 @@ class Paddle {
   }
 
   move() {
-    if (this.left === 0) {
+    if (this.left <= 0) {
       this.setDirection(1);
-    } else if (this.right === 400) {
+    } else if (this.right >= 400) {
       this.setDirection(-1);
     }
     this.x += this.direction * this.speed;
