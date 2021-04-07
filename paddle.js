@@ -11,21 +11,32 @@ class Paddle {
     this.direction = 0;
   }
 
-  move() {
-    if (this.left === 0) {
-      this.setDirection(1);
-    } else if (this.right === this.canvas.width) {
-      this.setDirection(-1);
-    }
-    this.x += this.direction * this.speed;
-    this.updateEdges();
+  getTopEdge() {
+    return this.y;
   }
 
-  updateEdges() {
-    this.top = this.y;
-    this.bottom = this.x + this.height;
-    this.left = this.x;
-    this.right = this.x + this.width;
+  getBottomEdge() {
+    return this.x + this.height;
+  }
+
+  getLeftEdge() {
+    return this.x;
+  }
+
+  getRightEdge() {
+    return this.x + this.width;
+  }
+
+  move() {
+    const left = this.getLeftEdge();
+    const right = this.getRightEdge();
+
+    if (
+      (this.direction === -1 && left >= 0) ||
+      (this.direction === 1 && right <= this.canvas.width)
+    ) {
+      this.x += this.direction * this.speed;
+    }
   }
 
   setDirection(direction) {

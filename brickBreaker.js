@@ -2,12 +2,12 @@ class BrickBreaker {
   constructor() {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
-    this.score = 0;
     this.initializeEntities();
     this.initializeEventListeners();
   }
 
   initializeEntities() {
+    this.score = 0;
     this.ball = new Ball(this.ctx, this.canvas.width / 2, 200, 10, "#FFF", 4);
     this.paddle = new Paddle(
       this.canvas,
@@ -53,12 +53,16 @@ class BrickBreaker {
   }
 
   keyDownHandler(e) {
+    console.log("key", e);
     switch (e.key) {
       case "ArrowLeft":
         this.paddle.setDirection(-1);
         break;
       case "ArrowRight":
         this.paddle.setDirection(1);
+        break;
+      case " ":
+        this.reset();
         break;
     }
   }
@@ -80,8 +84,13 @@ class BrickBreaker {
   }
 
   detectPaddleCollision(ballTop, ballBottom, ballLeft, ballRight) {
-    if (this.paddle.top <= ballBottom && ballTop >= this.paddle.bottom) {
-      if (this.paddle.left <= ballLeft && this.paddle.right >= ballRight) {
+    const paddleTop = this.paddle.getTopEdge();
+    const paddleBottom = this.paddle.getBottomEdge();
+    const paddleLeft = this.paddle.getLeftEdge();
+    const paddleRight = this.paddle.getRightEdge();
+
+    if (paddleTop <= ballBottom && ballTop >= paddleBottom) {
+      if (paddleLeft <= ballLeft && paddleRight >= ballRight) {
         if (this.ball.xDirection === -1) {
           this.ball.setYDirection(this.ball.xDirection);
         } else {
@@ -174,13 +183,9 @@ class BrickBreaker {
     this.ctx.font = "20px Arial";
     this.ctx.fillText(`Score: ${this.score}`, 300, 575);
     if (this.score === this.brickRows * this.brickCols) {
-      this.ctx.font = "30px Arial";
-      this.ctx.fillText(
-        "YOU WIN",
-        this.canvas.width / 2,
-        this.canvas.height / 2
-      );
       this.reset();
+      this.ctx.font = "50px Arial";
+      this.ctx.fillText("YOU WIN", 150, this.canvas.height / 2);
     }
   }
 
