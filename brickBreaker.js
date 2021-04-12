@@ -96,7 +96,6 @@ class BrickBreaker {
         } else {
           this.ball.setYDirection(-1);
         }
-        this.ball.setXDirection(this.ball.xDirection);
       }
     }
   }
