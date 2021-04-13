@@ -6,7 +6,7 @@ class BrickBreaker {
     this.initializeEventListeners();
   }
 
-  initializaBricks() {
+  initializeBricks() {
     this.bricks = [];
     this.brickCols = 5;
     this.brickRows = 8;
@@ -48,7 +48,7 @@ class BrickBreaker {
       5,
       "grey"
     );
-    this.initializaBricks();
+    this.initializeBricks();
   }
 
   initializeEventListeners() {
@@ -87,22 +87,14 @@ class BrickBreaker {
   }
 
   detectCanvasCollision(ballTop, ballLeft, ballRight) {
-    if (ballLeft <= 0) {
-      this.ball.setXDirection(1);
-      this.ball.setYDirection(this.ball.yDirection);
-    } else if (ballRight >= this.canvas.width) {
-      this.ball.setXDirection(-1);
-      this.ball.setYDirection(this.ball.yDirection);
+    if (ballLeft <= 0 || ballRight >= this.canvas.width) {
+      this.ball.setXDirection(-this.ball.xDirection);
     } else if (ballTop <= 0) {
-      this.ball.setXDirection(this.ball.xDirection);
-      this.ball.setYDirection(1);
+      this.ball.setYDirection(-this.ball.yDirection);
     } else if (ballTop > this.canvas.height) {
-      this.clearCanvas();
+      this.ball.setXDirection(0);
+      this.ball.setYDirection(0);
     }
-  }
-
-  detectBallCollisionWithEntity(entity) {
-    //do stuff
   }
 
   detectPaddleCollision(ballTop, ballBottom, ballLeft, ballRight) {
@@ -111,13 +103,9 @@ class BrickBreaker {
     const paddleLeft = this.paddle.getLeftEdge();
     const paddleRight = this.paddle.getRightEdge();
 
-    if (paddleTop <= ballBottom && ballTop >= paddleBottom) {
+    if (paddleTop < ballBottom && ballTop >= paddleBottom) {
       if (paddleLeft <= ballLeft && paddleRight >= ballRight) {
-        if (this.ball.xDirection === -1) {
-          this.ball.setYDirection(this.ball.xDirection);
-        } else {
-          this.ball.setYDirection(-1);
-        }
+        this.ball.setYDirection(-this.ball.yDirection);
       }
     }
   }
@@ -133,11 +121,10 @@ class BrickBreaker {
         if (!brick.broken) {
           if (ballRight >= brickLeft && ballLeft <= brickRight) {
             if (brickBottom >= ballTop || brickTop >= ballBottom) {
-              if (this.ball.xDirection !== 0) {
-                this.ball.setXDirection(-this.ball.xDirection);
-              } else {
-                this.ball.setXDirection(1);
+              if (this.ball.xDirection === 0) {
+                this.ball.setXDirection(-1);
               }
+              this.ball.setXDirection(-this.ball.xDirection);
               this.ball.setYDirection(-this.ball.yDirection);
               brick.broken = true;
               this.score += 1;
@@ -190,7 +177,7 @@ class BrickBreaker {
     if (this.score === this.brickRows * this.brickCols) {
       this.clearCanvas();
       this.ctx.font = "50px Arial";
-      this.ctx.fillText("YOU WIN", 150, this.canvas.height / 2);
+      this.ctx.fillText("YOU WIN", 100, this.canvas.height / 2);
     }
   }
 
