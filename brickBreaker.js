@@ -6,19 +6,7 @@ class BrickBreaker {
     this.initializeEventListeners();
   }
 
-  initializeEntities() {
-    this.score = 0;
-    this.ball = new Ball(this.ctx, this.canvas.width / 2, 200, 10, "#FFF", 4);
-    this.paddle = new Paddle(
-      this.canvas,
-      this.ctx,
-      100,
-      10,
-      150,
-      525,
-      5,
-      "grey"
-    );
+  initializaBricks() {
     this.bricks = [];
     this.brickCols = 5;
     this.brickRows = 8;
@@ -45,6 +33,22 @@ class BrickBreaker {
         this.bricks[row][col] = brick;
       }
     }
+  }
+
+  initializeEntities() {
+    this.score = 0;
+    this.ball = new Ball(this.ctx, this.canvas.width / 2, 200, 10, "#FFF", 4);
+    this.paddle = new Paddle(
+      this.canvas,
+      this.ctx,
+      100,
+      10,
+      150,
+      525,
+      5,
+      "grey"
+    );
+    this.initializaBricks();
   }
 
   initializeEventListeners() {
