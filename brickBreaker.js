@@ -97,45 +97,40 @@ class BrickBreaker {
     }
   }
 
-  detectBallCollisionWithEntity(entity) {
-    const ballTop = this.ball.getTopEdge();
-    const ballBottom = this.ball.getBottomEdge();
-    const ballLeft = this.ball.getLeftEdge();
-    const ballRight = this.ball.getRightEdge();
-
+  detectBallCollisionWithEntity(
+    entity,
+    ballTop,
+    ballBottom,
+    ballLeft,
+    ballRight
+  ) {
     if (entity === this.paddle) {
-      //do stuff
-    }
-  }
+      const paddleTop = this.paddle.getTopEdge();
+      const paddleBottom = this.paddle.getBottomEdge();
+      const paddleLeft = this.paddle.getLeftEdge();
+      const paddleRight = this.paddle.getRightEdge();
 
-  detectPaddleCollision(ballTop, ballBottom, ballLeft, ballRight) {
-    const paddleTop = this.paddle.getTopEdge();
-    const paddleBottom = this.paddle.getBottomEdge();
-    const paddleLeft = this.paddle.getLeftEdge();
-    const paddleRight = this.paddle.getRightEdge();
-
-    if (paddleTop < ballBottom && ballTop >= paddleBottom) {
-      if (paddleLeft <= ballLeft && paddleRight >= ballRight) {
-        this.ball.invertYDirection();
+      if (paddleTop < ballBottom && ballTop >= paddleBottom) {
+        if (paddleLeft <= ballLeft && paddleRight >= ballRight) {
+          this.ball.invertYDirection();
+        }
       }
-    }
-  }
-
-  detectBrickCollisions(ballTop, ballBottom, ballLeft, ballRight) {
-    for (let row = 0; row < this.bricks.length; row++) {
-      for (let col = 0; col < this.bricks[row].length; col++) {
-        const brick = this.bricks[row][col];
-        const brickTop = brick.getTopEdge();
-        const brickBottom = brick.getBottomEdge();
-        const brickLeft = brick.getLeftEdge();
-        const brickRight = brick.getRightEdge();
-        if (!brick.broken) {
-          if (ballRight >= brickLeft && ballLeft <= brickRight) {
-            if (brickBottom >= ballTop || brickTop >= ballBottom) {
-              this.ball.invertXDirection();
-              this.ball.invertYDirection();
-              brick.broken = true;
-              this.score += 1;
+    } else if (entity === this.bricks) {
+      for (let row = 0; row < this.brickRows; row++) {
+        for (let col = 0; col < this.brickCols; col++) {
+          const brick = this.bricks[row][col];
+          const brickTop = brick.getTopEdge();
+          const brickBottom = brick.getBottomEdge();
+          const brickLeft = brick.getLeftEdge();
+          const brickRight = brick.getRightEdge();
+          if (!brick.broken) {
+            if (ballRight >= brickLeft && ballLeft <= brickRight) {
+              if (brickBottom >= ballTop || brickTop >= ballBottom) {
+                this.ball.invertXDirection();
+                this.ball.invertYDirection();
+                brick.broken = true;
+                this.score += 1;
+              }
             }
           }
         }
@@ -149,9 +144,21 @@ class BrickBreaker {
     const ballLeft = this.ball.getLeftEdge();
     const ballRight = this.ball.getRightEdge();
 
-    this.detectPaddleCollision(ballTop, ballBottom, ballLeft, ballRight);
     this.detectCanvasCollision(ballTop, ballLeft, ballRight);
-    this.detectBrickCollisions(ballTop, ballBottom, ballLeft, ballRight);
+    this.detectBallCollisionWithEntity(
+      this.paddle,
+      ballTop,
+      ballBottom,
+      ballLeft,
+      ballRight
+    );
+    this.detectBallCollisionWithEntity(
+      this.bricks,
+      ballTop,
+      ballBottom,
+      ballLeft,
+      ballRight
+    );
   }
 
   clearCanvas() {
