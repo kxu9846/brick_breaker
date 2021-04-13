@@ -6,7 +6,7 @@ class Ball {
     this.radius = radius;
     this.color = color;
     this.speed = speed;
-    this.xDirection = 0;
+    this.xDirection = 1;
     this.yDirection = 1;
   }
 
@@ -31,12 +31,12 @@ class Ball {
     this.y += this.yDirection * this.speed;
   }
 
-  setXDirection(direction) {
-    this.xDirection = direction;
+  invertXDirection() {
+    this.xDirection = -this.xDirection;
   }
 
-  setYDirection(direction) {
-    this.yDirection = direction;
+  invertYDirection() {
+    this.yDirection = -this.yDirection;
   }
 
   render() {

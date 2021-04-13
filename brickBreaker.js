@@ -37,7 +37,7 @@ class BrickBreaker {
 
   initializeEntities() {
     this.score = 0;
-    this.ball = new Ball(this.ctx, this.canvas.width / 2, 200, 10, "#FFF", 4);
+    this.ball = new Ball(this.ctx, this.canvas.width / 2, 500, 10, "#FFF", 4);
     this.paddle = new Paddle(
       this.canvas,
       this.ctx,
@@ -88,12 +88,23 @@ class BrickBreaker {
 
   detectCanvasCollision(ballTop, ballLeft, ballRight) {
     if (ballLeft <= 0 || ballRight >= this.canvas.width) {
-      this.ball.setXDirection(-this.ball.xDirection);
+      this.ball.invertXDirection();
     } else if (ballTop <= 0) {
-      this.ball.setYDirection(-this.ball.yDirection);
+      this.ball.invertYDirection();
     } else if (ballTop > this.canvas.height) {
-      this.ball.setXDirection(0);
-      this.ball.setYDirection(0);
+      this.ball.xDirection = 0;
+      this.ball.yDirection = 0;
+    }
+  }
+
+  detectBallCollisionWithEntity(entity) {
+    const ballTop = this.ball.getTopEdge();
+    const ballBottom = this.ball.getBottomEdge();
+    const ballLeft = this.ball.getLeftEdge();
+    const ballRight = this.ball.getRightEdge();
+
+    if (entity === this.paddle) {
+      //do stuff
     }
   }
 
@@ -105,7 +116,7 @@ class BrickBreaker {
 
     if (paddleTop < ballBottom && ballTop >= paddleBottom) {
       if (paddleLeft <= ballLeft && paddleRight >= ballRight) {
-        this.ball.setYDirection(-this.ball.yDirection);
+        this.ball.invertYDirection();
       }
     }
   }
@@ -121,11 +132,8 @@ class BrickBreaker {
         if (!brick.broken) {
           if (ballRight >= brickLeft && ballLeft <= brickRight) {
             if (brickBottom >= ballTop || brickTop >= ballBottom) {
-              if (this.ball.xDirection === 0) {
-                this.ball.setXDirection(-1);
-              }
-              this.ball.setXDirection(-this.ball.xDirection);
-              this.ball.setYDirection(-this.ball.yDirection);
+              this.ball.invertXDirection();
+              this.ball.invertYDirection();
               brick.broken = true;
               this.score += 1;
             }
