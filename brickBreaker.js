@@ -53,7 +53,6 @@ class BrickBreaker {
   }
 
   keyDownHandler(e) {
-    console.log("key", e);
     switch (e.key) {
       case "ArrowLeft":
         this.paddle.setDirection(-1);
