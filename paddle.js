@@ -31,11 +31,11 @@ class Paddle {
     const left = this.getLeftEdge();
     const right = this.getRightEdge();
 
-    if (
-      (this.direction === -1 && left >= 0) ||
-      (this.direction === 1 && right <= this.canvas.width)
-    ) {
-      this.x += this.direction * this.speed;
+    const futureX = left + this.direction * this.speed;
+    const futureRight = right + this.direction * this.speed;
+
+    if (futureX >= 0 && futureRight <= this.canvas.width) {
+      this.x = futureX;
     }
   }
 
