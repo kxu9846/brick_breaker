@@ -108,35 +108,36 @@ class BrickBreaker {
     const entityBottom = entity.getBottomEdge();
     const entityLeft = entity.getLeftEdge();
     const entityRight = entity.getRightEdge();
-    const ballHeight = this.ball.radius * 2;
-    let isCollision = false;
-
-    console.log("entity", entityTop, entityBottom, entityLeft, entityRight);
+    let collisionDetected = false;
 
     if (
       (entityLeft <= ballRight &&
         entityTop <= ballBottom &&
-        entityBottom >= ballTop) ||
+        entityBottom >= ballTop &&
+        entityRight >= ballLeft) ||
       (entityRight >= ballLeft &&
         entityTop <= ballBottom &&
-        entityBottom >= ballTop)
+        entityBottom >= ballTop &&
+        entityLeft <= ballRight)
     ) {
       this.ball.invertXDirection();
-      isCollision = true;
+      collisionDetected = true;
     }
     if (
-      entityTop <= ballBottom &&
-      entityLeft <= ballRight &&
-      entityRight >= ballLeft &&
-      entityBottom >= ballTop &&
-      entityLeft <= ballRight &&
-      entityRight >= ballLeft
+      (entityTop <= ballBottom &&
+        ballBottom >= entityBottom &&
+        entityLeft <= ballRight &&
+        entityRight >= ballLeft) ||
+      (entityBottom >= ballTop &&
+        ballTop >= entityTop &&
+        entityLeft <= ballRight &&
+        entityRight >= ballLeft)
     ) {
       this.ball.invertYDirection();
-      isCollision = true;
+      collisionDetected = true;
     }
 
-    return isCollision;
+    return collisionDetected;
   }
 
   detectBrickCollisions(ballTop, ballBottom, ballLeft, ballRight) {
@@ -208,7 +209,7 @@ class BrickBreaker {
     if (this.score === this.brickRows * this.brickCols) {
       this.clearCanvas();
       this.ctx.font = "50px Arial";
-      this.ctx.fillText("YOU WIN", 100, this.canvas.height / 2);
+      this.ctx.fillText("YOU WIN", 90, this.canvas.height / 2);
     }
   }
 
